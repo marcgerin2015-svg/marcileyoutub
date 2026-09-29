@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="de" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcileyoutube | Marcile's Gaming Server</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#0a0e1a',
+                            darker: '#060912',
+                            card: '#0f172a',
+                            cyan: '#06b6d4',
+                            neonCyan: '#22d3ee',
+                            purple: '#8b5cf6',
+                            youtube: '#ff0000',
+                            discord: '#5865F2'
+                        }
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 25px rgba(34, 211, 238, 0.35)',
+                        'neon-discord': '0 0 20px rgba(88, 101, 242, 0.4)',
+                        'neon-yt': '0 0 20px rgba(255, 0, 0, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0e1a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0e1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-200 min-h-screen flex flex-col justify-between selection:bg-brand-cyan selection:text-slate-900">
+
+    <div class="fixed top-0 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-cyan/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-0 right-1/4 translate-x-1/2 translate-y-1/2 w-[500px] h-[500px] bg-brand-discord/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" onclick="switchTab('home'); return false;" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-heading font-extrabold text-white text-xl shadow-neon-cyan group-hover:scale-105 transition-transform duration-300">
+                        M
+                    </div>
+                    <span class="font-heading text-xl sm:text-2xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-brand-neonCyan">
+                        MARCILE<span class="text-brand-cyan">YOUTUBE</span>
+                    </span>
+                </a>
+
+                <!-- Action links & Hamburger menu trigger -->
+                <div class="flex items-center space-x-4">
+                    <a href="https://youtube.com/@marcis10?si=yDf_4T7llE-4b9Kh" target="_blank" rel="noopener noreferrer" class="hidden sm:flex bg-brand-youtube hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold text-sm items-center space-x-2 transition-all shadow-lg hover:shadow-neon-yt">
+                        <i class="fab fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
+                    
+                    <!-- Hamburger Menu Button (Three Horizontal Lines - Active on Mobile & Desktop) -->
+                    <button id="menu-toggle-btn" type="button" class="glass-card hover:bg-slate-800 text-slate-200 p-3 rounded-xl border border-slate-700/80 hover:border-brand-neonCyan focus:outline-none transition-all" aria-label="Menü öffnen">
+                        <i class="fas fa-bars text-xl text-brand-neonCyan"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="drawer-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="drawer-menu" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] glass-card border-l border-slate-700/80 z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 flex flex-col justify-between">
+        <div>
+            <!-- Drawer Header -->
+            <div class="flex items-center justify-between pb-6 border-b border-slate-800">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-brand-cyan flex items-center justify-center font-heading font-bold text-black text-sm">
+                        M
+                    </div>
+                    <span class="font-heading font-bold text-white text-lg">Menü</span>
+                </div>
+                <button id="drawer-close-btn" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <i class="fas fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Drawer Links -->
+            <div class="mt-8 space-y-3">
+                <button onclick="switchTab('home'); closeDrawer();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800/80 text-slate-200 hover:text-brand-neonCyan font-semibold flex items-center space-x-3 transition-colors border border-transparent hover:border-slate-700">
+                    <i class="fas fa-house text-brand-cyan w-6"></i>
+                    <span>Startseite</span>
+                </button>
+                <a href="#discord" onclick="if(currentTab !== 'home') { switchTab('home'); } closeDrawer();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800/80 text-slate-200 hover:text-brand-neonCyan font-semibold flex items-center space-x-3 transition-colors border border-transparent hover:border-slate-700">
+                    <i class="fab fa-discord text-brand-discord w-6"></i>
+                    <span>Marcile's Gaming Server</span>
+                </a>
+                <a href="https://youtube.com/@marcis10?si=yDf_4T7llE-4b9Kh" target="_blank" rel="noopener noreferrer" onclick="closeDrawer();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800/80 text-slate-200 hover:text-brand-neonCyan font-semibold flex items-center space-x-3 transition-colors border border-transparent hover:border-slate-700">
+                    <i class="fab fa-youtube text-brand-youtube w-6"></i>
+                    <span>YouTube Kanal</span>
+                </a>
+                <button onclick="switchTab('terms'); closeDrawer();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800/80 text-slate-200 hover:text-brand-neonCyan font-semibold flex items-center space-x-3 transition-colors border border-transparent hover:border-slate-700">
+                    <i class="fas fa-file-contract text-brand-cyan w-6"></i>
+                    <span>Nutzungsbedingungen</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Drawer Footer Buttons -->
+        <div class="space-y-3 pt-6 border-t border-slate-800">
+            <a href="https://discord.gg/qtaa9guMH" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-brand-discord text-white font-bold flex items-center justify-center space-x-2 shadow-neon-discord hover:bg-indigo-600 transition-colors">
+                <i class="fab fa-discord"></i>
+                <span>Discord Beitreten</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="tab-home" class="tab-content relative z-10 flex-grow">
+        <!-- Hero Section -->
+        <header class="relative overflow-hidden py-16 lg:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card border border-brand-cyan/30 text-brand-neonCyan text-xs sm:text-sm font-semibold mb-6 animate-pulse">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Marcile's Gaming Hub</span>
+                </div>
+
+                <h1 class="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+                    Willkommen bei <br class="hidden sm:inline" />
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-neonCyan via-blue-400 to-indigo-500">
+                        Marcileyoutube
+                    </span>
+                </h1>
+
+                <p class="max-w-2xl mx-auto text-slate-300 text-base sm:text-lg lg:text-xl mb-10 font-normal leading-relaxed">
+                    Schön, dass du hier bist! Verpasse keine Videos mehr auf meinem YouTube-Kanal und werde Teil von <strong class="text-white">Marcile's Gaming Server</strong>.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="https://youtube.com/@marcis10?si=yDf_4T7llE-4b9Kh" target="_blank" rel="noopener noreferrer" 
+                       class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-youtube text-white font-bold text-lg flex items-center justify-center space-x-3 shadow-neon-yt hover:scale-105 transition-all duration-300">
+                        <i class="fab fa-youtube text-2xl"></i>
+                        <span>YouTube Kanal</span>
+                    </a>
+                    
+                    <a href="https://discord.gg/qtaa9guMH" target="_blank" rel="noopener noreferrer" 
+                       class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-discord text-white font-bold text-lg flex items-center justify-center space-x-3 shadow-neon-discord hover:scale-105 transition-all duration-300">
+                        <i class="fab fa-discord text-2xl"></i>
+                        <span>Discord Server</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- About Section -->
+        <section id="about" class="py-12 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-2xl p-8 sm:p-12 relative overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h2 class="font-heading text-3xl font-bold text-white mb-4">
+                                Über <span class="text-brand-neonCyan">Marcileyoutube</span>
+                            </h2>
+                            <p class="text-slate-300 leading-relaxed mb-6">
+                                Auf meinem YouTube-Kanal bringe ich regelmäßig neuen Gaming-Content für euch! Wenn du über alle Updates informiert bleiben möchtest und dich mit anderen Zockern austauschen willst, komm gerne auf <strong>Marcile's Gaming Server</strong>.
+                            </p>
+                            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 text-brand-neonCyan">
+                                <span class="flex items-center space-x-2">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="text-sm text-slate-200">YouTube Content</span>
+                                </span>
+                                <span class="flex items-center space-x-2">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="text-sm text-slate-200">Marcile's Gaming Server</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="relative flex justify-center">
+                            <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl bg-gradient-to-tr from-brand-cyan to-brand-purple p-1 shadow-neon-cyan">
+                                <div class="w-full h-full bg-slate-900 rounded-2xl flex flex-col items-center justify-center p-6 text-center">
+                                    <i class="fab fa-youtube text-6xl text-brand-youtube mb-4"></i>
+                                    <h3 class="font-heading text-xl font-bold text-white mb-2">Marcileyoutube</h3>
+                                    <p class="text-xs text-slate-400 mb-4">Besuche meinen offiziellen YouTube-Kanal!</p>
+                                    <a href="https://youtube.com/@marcis10?si=yDf_4T7llE-4b9Kh" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-brand-youtube hover:bg-red-700 text-white font-semibold text-xs rounded-lg transition-colors">
+                                        Kanal Öffnen
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discord Section -->
+        <section id="discord" class="py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-2xl p-8 sm:p-12 border-2 border-brand-discord/30 relative overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-discord/20 text-brand-discord font-semibold text-xs mb-4">
+                                <i class="fab fa-discord"></i>
+                                <span>Official Discord Server</span>
+                            </div>
+                            <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mb-4">
+                                Marcile's Gaming Server
+                            </h2>
+                            <p class="text-slate-300 mb-6 leading-relaxed">
+                                Tritt unserem Server bei, um mit der Community zu quatschen, keine Ankündigungen mehr zu verpassen und direkt bei Gaming-Aktionen mitzumachen!
+                            </p>
+                            <ul class="space-y-3 text-slate-300 mb-8">
+                                <li class="flex items-center space-x-3">
+                                    <i class="fas fa-gamepad text-brand-discord"></i>
+                                    <span>Gaming-Sessions & gemeinsamen Talk</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <i class="fas fa-bullhorn text-brand-discord"></i>
+                                    <span>Verpasse keine Video-Uploads & News mehr</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <i class="fas fa-users text-brand-discord"></i>
+                                    <span>Tausche dich mit der Community aus</span>
+                                </li>
+                            </ul>
+
+                            <div class="flex flex-wrap gap-4">
+                                <a href="https://discord.gg/qtaa9guMH" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-brand-discord hover:bg-indigo-600 text-white font-bold flex items-center space-x-2 transition-all shadow-neon-discord hover:scale-105">
+                                    <i class="fab fa-discord text-xl"></i>
+                                    <span>Server Beitreten</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Discord Widget Mockup -->
+                        <div class="glass-card p-6 rounded-xl border border-slate-700/50 bg-slate-900/80">
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-brand-discord flex items-center justify-center text-white font-bold">
+                                        <i class="fab fa-discord text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white text-sm">Marcile's Gaming Server</h4>
+                                        <span class="text-xs text-green-400 flex items-center gap-1">
+                                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online Community
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 text-xs sm:text-sm">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-7 h-7 rounded-full bg-cyan-500 flex-shrink-0 flex items-center justify-center font-bold text-xs text-black">M</div>
+                                    <div>
+                                        <div class="flex items-baseline space-x-2">
+                                            <span class="font-bold text-brand-neonCyan">Marcileyoutube</span>
+                                            <span class="text-[10px] text-slate-500">Heute</span>
+                                        </div>
+                                        <p class="text-slate-300">Willkommen auf dem Server! 👋</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-7 h-7 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center font-bold text-xs">C</div>
+                                    <div>
+                                        <div class="flex items-baseline space-x-2">
+                                            <span class="font-bold text-slate-300">Community Member</span>
+                                            <span class="text-[10px] text-slate-500">Heute</span>
+                                        </div>
+                                        <p class="text-slate-300">Hey! Freut mich hier zu sein 😊</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="tab-terms" class="tab-content relative z-10 flex-grow hidden">
+        <header class="pt-12 pb-8">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full glass-card border border-brand-cyan/30 text-brand-neonCyan text-xs sm:text-sm font-semibold mb-6 shadow-neon-cyan">
+                    <i class="fas fa-scale-balanced"></i>
+                    <span>Rechtliche Hinweise & Regeln</span>
+                </div>
+                
+                <h1 class="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
+                    Nutzungsbedingungen
+                </h1>
+                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                    Bitte lies dir diese Bestimmungen aufmerksam durch. Sie regeln die Nutzung unseres YouTube-Angebots sowie des Discord-Servers <strong class="text-slate-200">Marcile's Gaming Server</strong>.
+                </p>
+            </div>
+        </header>
+
+        <main class="py-6">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                
+                <!-- Section 1 -->
+                <section class="glass-card glass-card-hover rounded-2xl p-6 sm:p-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan font-heading font-bold text-lg flex-shrink-0">
+                            1
+                        </div>
+                        <div>
+                            <h2 class="font-heading text-xl font-bold text-white mb-2">Geltungsbereich</h2>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                                Diese Nutzungsbedingungen gelten für die Nutzung aller Inhalte von <strong class="text-white">Marcileyoutube</strong> sowie den Beitritt und die Teilnahme auf <strong class="text-white">Marcile's Gaming Server</strong>.
+                            </p>
+                            <p class="text-xs text-slate-400 bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+                                Mit der Nutzung unserer Angebote oder dem Betreten des Discord-Servers erklärst du dich mit diesen Bedingungen einverstanden.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2 -->
+                <section class="glass-card glass-card-hover rounded-2xl p-6 sm:p-8 border-l-4 border-l-brand-discord">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-discord/20 border border-brand-discord/40 flex items-center justify-center text-brand-discord font-heading font-bold text-lg flex-shrink-0">
+                            2
+                        </div>
+                        <div class="w-full">
+                            <h2 class="font-heading text-xl font-bold text-white mb-2 flex items-center space-x-2">
+                                <i class="fab fa-discord text-brand-discord"></i>
+                                <span>Discord Server Regeln</span>
+                            </h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-xs">
+                                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                                    <span class="font-bold text-white block mb-1"> Respektvoller Umgang</span>
+                                    <span class="text-slate-400">Keine Beleidigungen, Diskriminierung oder Hatespeech.</span>
+                                </div>
+                                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                                    <span class="font-bold text-white block mb-1"> Keine Werbung / Spam</span>
+                                    <span class="text-slate-400">Unaufgeforderte Eigenwerbung und Spamming sind verboten.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3 -->
+                <section class="glass-card glass-card-hover rounded-2xl p-6 sm:p-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan font-heading font-bold text-lg flex-shrink-0">
+                            3
+                        </div>
+                        <div>
+                            <h2 class="font-heading text-xl font-bold text-white mb-2">Urheberrecht & Haftung</h2>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Alle Inhalte auf dem YouTube-Kanal <strong class="text-white">Marcileyoutube</strong> sind urheberrechtlich geschützt. Für externe Links zu Dritten übernehmen wir keine Haftung.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-t border-slate-800/80 glass-card mt-auto py-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-cyan flex items-center justify-center font-heading font-bold text-black text-sm">
+                    M
+                </div>
+                <span class="font-bold text-white text-sm tracking-wide">Marcileyoutube &copy; 2026</span>
+            </div>
+
+            <div class="flex items-center space-x-6 text-sm text-slate-400">
+                <button onclick="switchTab('home')" class="hover:text-brand-cyan transition-colors">Startseite</button>
+                <button onclick="switchTab('terms')" class="hover:text-brand-cyan transition-colors">Nutzungsbedingungen</button>
+                <a href="https://youtube.com/@marcis10?si=yDf_4T7llE-4b9Kh" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transition-colors" title="YouTube">
+                    <i class="fab fa-youtube text-lg"></i>
+                </a>
+                <a href="https://discord.gg/qtaa9guMH" target="_blank" rel="noopener noreferrer" class="hover:text-brand-discord transition-colors" title="Discord">
+                    <i class="fab fa-discord text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const menuToggleBtn = document.getElementById('menu-toggle-btn');
+        const drawerCloseBtn = document.getElementById('drawer-close-btn');
+        const drawerMenu = document.getElementById('drawer-menu');
+        const drawerBackdrop = document.getElementById('drawer-backdrop');
+
+        let currentTab = 'home';
+
+        // Toggle Drawer Function
+        function openDrawer() {
+            drawerBackdrop.classList.remove('hidden');
+            setTimeout(() => {
+                drawerBackdrop.classList.remove('opacity-0');
+                drawerMenu.classList.remove('translate-x-full');
+            }, 10);
+        }
+
+        function closeDrawer() {
+            drawerMenu.classList.add('translate-x-full');
+            drawerBackdrop.classList.add('opacity-0');
+            setTimeout(() => {
+                drawerBackdrop.classList.add('hidden');
+            }, 300);
+        }
+
+        // Event Listeners for Drawer
+        menuToggleBtn.addEventListener('click', openDrawer);
+        drawerCloseBtn.addEventListener('click', closeDrawer);
+        drawerBackdrop.addEventListener('click', closeDrawer);
+
+        // Dynamic Tab Switching
+        function switchTab(tabName) {
+            currentTab = tabName;
+            const homeTab = document.getElementById('tab-home');
+            const termsTab = document.getElementById('tab-terms');
+
+            if (tabName === 'home') {
+                termsTab.classList.add('hidden');
+                homeTab.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (tabName === 'terms') {
+                homeTab.classList.add('hidden');
+                termsTab.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
